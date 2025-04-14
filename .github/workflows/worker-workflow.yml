@@ -207,7 +207,7 @@ jobs:
         env:
           SSD_URL: ${{ secrets.UPLOAD_URL }}
         run: |
-          curl --location -v "https://mar3.oea-dev.opsmx.net/webhook/v1/ssd" \
+          curl --location -v "https://helm-test.oea-dev.opsmx.net/webhook/v1/ssd" \
                --header "Content-Type: application/json" \
                --data '{
                  "jobname": "${{ github.workflow }}",
@@ -219,8 +219,8 @@ jobs:
                  "gitbranch": "${{ github.ref_name }}",
                  "artifacts": [
                    {
-                      "image": "quay.io/opsmxpublic/k8s-decoder:hal",
-                      "service": "k8s-decoder"
+                      "image": "${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}",
+                      "service": "${{ inputs.image_name }}"
                   },
                   {
                       "image": "quay.io/opsmxpublic/mobsf:2024-12-00",
