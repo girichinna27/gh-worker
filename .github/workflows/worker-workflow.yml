@@ -117,7 +117,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t "${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}" \
+          docker build --no-cache -t "${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}" \
           -f "${{ inputs.dockerfile_path }}" "${{ inputs.context }}"
 
       - name: Push Image to JFrog
