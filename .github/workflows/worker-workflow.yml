@@ -111,25 +111,22 @@ jobs:
           echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
           echo "LOG_DIR=$LOG_DIR" >> $GITHUB_ENV
 
-
-
-
       - name: Log in to JFrog Artifactory
         run: |
           echo "${{ secrets.JFROG_PASSWORD }}" | docker login -u "${{ secrets.JFROG_USERNAME }}" --password-stdin "${{ inputs.registry }}"
 
       - name: Build Docker Image
         run: |
-          docker build -t "${{ inputs.registry }}/dev-docker-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}" \
+          docker build -t "${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}" \
           -f "${{ inputs.dockerfile_path }}" "${{ inputs.context }}"
 
       - name: Push Image to JFrog
         run: |
-          docker push "${{ inputs.registry }}/dev-docker-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
+          docker push "${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
 
       - name: Print GitHub Environment Variables
         run: |
-          echo "Artifact Name: ${{ inputs.registry }}/dev-docker-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
+          echo "Artifact Name: ${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
           echo "Registry: ${{ inputs.registry }}"
           echo "Image Name: ${{ inputs.image_name }}"
           echo "Artifact Tag: ${{ inputs.image_tag }}"
@@ -152,7 +149,7 @@ jobs:
             --scanners=trivy,semgrep,openssf \
             --trivy-scanners=codelicensescan,codesecretscan,sbom,imagelicensescan,imagesecretscan \
             --artifact-type="image" \
-            --artifact-name="${{ inputs.registry }}/dev-docker-docker/${{ inputs.image_name }}" \
+            --artifact-name="${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}" \
             --artifact-tag="${{ inputs.image_tag }}" \
             --upload-url="${UPLOAD_URL}" \
             --ssd-token="${SSD_TEAM_TOKEN}" \
@@ -203,7 +200,7 @@ jobs:
           echo "Only Repository Name: ${{ github.event.repository.name }}"
           echo "Organization: ${{ github.event.organization.login }}"
           echo "Git Branch: ${{ github.ref_name }}"
-          echo "Artifact Image: ${{ inputs.registry }}/dev-docker-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
+          echo "Artifact Image: ${{ inputs.registry }}/ssd-docker/${{ inputs.image_name }}:${{ inputs.image_tag }}"
           echo "Artifact Service: ${{ inputs.image_name }}"
       # Step 12: Send Build Event to SSD
       - name: Send Build Event to SSD
